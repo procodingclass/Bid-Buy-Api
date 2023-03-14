@@ -22,6 +22,6 @@ app.use('/api/auction', require('./routes/auction'))
 
 app.use('/api/user', require('./routes/user'))
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Example app listening on port ${process.env.PORT || 3000}`)
 })  
