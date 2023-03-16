@@ -23,7 +23,6 @@ router.get("/getAllOpenAuction/:appId", async (req, res) => {
 		const snapshot = await auctionsRef
         .where("appId", "==", appId)
         .where("status", "==", "open")
-		.orderBy('time', 'desc')
 		.get();
 
 		if (snapshot.empty) {
