@@ -444,7 +444,7 @@ router.get("/increaseBid/:appId/:auctionId/:userId", async (req, res) => {
               "bidders" : allBidders
            })
  
-		auctionData.highestBid = [newBid, userId]
+		auctionData.highestBid = [newBid, userId, 'app']
 	    auctionData.bidders = allBidders
 
 		return res.status(200).json(auctionData);
