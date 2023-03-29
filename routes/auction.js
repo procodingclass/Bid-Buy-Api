@@ -270,7 +270,7 @@ router.post("/add",
 */
 router.get("/increaseBid/:appId/:auctionId/:userId/:userName", async (req, res) => {
 	try {
-		const { appId, auctionId, userId} = req.params;
+		const { appId, auctionId, userId, userName} = req.params;
 		console.log(appId, auctionId, userId)
 		var currentdate = new Date();
 		const auctionRef = db.collection("auctions");
