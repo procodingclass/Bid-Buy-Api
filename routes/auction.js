@@ -268,7 +268,7 @@ router.post("/add",
     method: GET
 
 */
-router.get("/increaseBid/:appId/:auctionId/:userId", async (req, res) => {
+router.get("/increaseBid/:appId/:auctionId/:userId/:userName", async (req, res) => {
 	try {
 		const { appId, auctionId, userId} = req.params;
 		console.log(appId, auctionId, userId)
@@ -344,7 +344,7 @@ router.get("/increaseBid/:appId/:auctionId/:userId", async (req, res) => {
         
         // set highest bid
         auction.update(
-            {"highestBid": [newBid, userId],
+            {"highestBid": [newBid, userId, userName],
               "bidders" : allBidders
            })
  
