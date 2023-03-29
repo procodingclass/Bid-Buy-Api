@@ -89,7 +89,21 @@ router.get("/bids/:appId/:userId", async (req, res) => {
 		snapshot.forEach((doc) => {
 
 			if(new Date(doc.data().time.seconds*1000) > currentdate){
-                auctionsData.push(doc.data());
+				data={
+					appId : doc.data().appId,
+					auctionId: doc.data().auctionId,
+					bidders : doc.data().bidders,
+					description : doc.data().description,
+					highestBid : doc.data().highestBid,
+					image : doc.data().image,
+					itemName : doc.data().itemName,
+					startBid : doc.data().startBid,
+					status : doc.data().status,
+					time : Math.ceil((new Date(doc.data().time.seconds*1000) -currentdate)/ (1000 * 3600 * 24)),
+					userId : doc.data().userId,
+				     }
+
+                auctionsData.push(data);
              }
              else{
                 db.collection('auctions').doc(doc.id).update({"status":"closed"})
@@ -130,7 +144,21 @@ router.get("/purchased/:appId/:userId", async (req, res) => {
 		let auctionsData = [];
 		snapshot.forEach((doc) => {
 			if(new Date(doc.data().time.seconds*1000) > currentdate){
-                auctionsData.push(doc.data());
+                data={
+					appId : doc.data().appId,
+					auctionId: doc.data().auctionId,
+					bidders : doc.data().bidders,
+					description : doc.data().description,
+					highestBid : doc.data().highestBid,
+					image : doc.data().image,
+					itemName : doc.data().itemName,
+					startBid : doc.data().startBid,
+					status : doc.data().status,
+					time : Math.ceil((new Date(doc.data().time.seconds*1000) -currentdate)/ (1000 * 3600 * 24)),
+					userId : doc.data().userId,
+				     }
+
+                auctionsData.push(data);
              }
              else{
                 db.collection('auctions').doc(doc.id).update({"status":"closed"})
@@ -167,7 +195,21 @@ router.get("/sold/:appId/:userId", async (req, res) => {
 		let auctionsData = [];
 		snapshot.forEach((doc) => {
 			if(new Date(doc.data().time.seconds*1000) > currentdate){
-                auctionsData.push(doc.data());
+                data={
+					appId : doc.data().appId,
+					auctionId: doc.data().auctionId,
+					bidders : doc.data().bidders,
+					description : doc.data().description,
+					highestBid : doc.data().highestBid,
+					image : doc.data().image,
+					itemName : doc.data().itemName,
+					startBid : doc.data().startBid,
+					status : doc.data().status,
+					time : Math.ceil((new Date(doc.data().time.seconds*1000) -currentdate)/ (1000 * 3600 * 24)),
+					userId : doc.data().userId,
+				     }
+
+                auctionsData.push(data);
              }
              else{
                 db.collection('auctions').doc(doc.id).update({"status":"closed"})
@@ -206,7 +248,21 @@ router.get("/onSale/:appId/:userId", async (req, res) => {
 		let auctionsData = [];
 		snapshot.forEach((doc) => {
 			if(new Date(doc.data().time.seconds*1000) > currentdate){
-                auctionsData.push(doc.data());
+                data={
+					appId : doc.data().appId,
+					auctionId: doc.data().auctionId,
+					bidders : doc.data().bidders,
+					description : doc.data().description,
+					highestBid : doc.data().highestBid,
+					image : doc.data().image,
+					itemName : doc.data().itemName,
+					startBid : doc.data().startBid,
+					status : doc.data().status,
+					time : Math.ceil((new Date(doc.data().time.seconds*1000) -currentdate)/ (1000 * 3600 * 24)),
+					userId : doc.data().userId,
+				     }
+
+                auctionsData.push(data);
              }
              else{
                 db.collection('auctions').doc(doc.id).update({"status":"closed"})
