@@ -7,7 +7,7 @@ const router = express.Router();
 const IP = require('ip');
 
 /*
-    Get all Auction items endpoint: http://host/api/auction/getOpenAuction
+    Get all Auction items endpoint: http://host/api/auction/getAllOpenAuction
     method: GET
 */	
 
@@ -43,7 +43,7 @@ router.get("/getAllOpenAuction/:appId", async (req, res) => {
 					itemName : doc.data().itemName,
 					startBid : doc.data().startBid,
 					status : doc.data().status,
-					time : new Date(doc.data().time.seconds*1000).getDate() - currentdate.getDate(),
+					time : Math.ceil((new Date(doc.data().time.seconds*1000) -currentdate)/ (1000 * 3600 * 24)),
 					userId : doc.data().userId,
 				     }
 
@@ -349,102 +349,6 @@ router.get("/increaseBid/:appId/:auctionId/:userId/:userName", async (req, res) 
            })
  
 		auctionData.highestBid = [newBid, userId]
-	    auctionData.bidders = allBidders
-
-		return res.status(200).json(auctionData);
-	} catch (error) {
-		console.log(error)
-		res.status(502).send({ "errorMessage ": "Pass valid values" });
-	}
-});
-
-
-/*
-  Increase bid endpoint: http://host/api/auction/increaseBid/:appId/:userId/:feedId
-    method: GET
-
-*/
-router.get("/increaseBid/:appId/:auctionId/:userId", async (req, res) => {
-	try {
-		const { appId, auctionId, userId} = req.params;
-		console.log(appId, auctionId, userId)
-		var currentdate = new Date();
-		const auctionRef = db.collection("auctions");
-		const snapshot = await auctionRef
-			.where("appId", "==", appId)
-            .where("auctionId", "==", auctionId)
-			.get();
-
-		if (snapshot.empty) {
-			console.log("no auction found")
-			return res.status(400).json({ auction: [], errorMessage: "No auction found" });
-		}
-
-		let auctionData = [];
-		flag = 1
-		snapshot.forEach((doc) => {
-			
-			if(new Date(doc.data().time.seconds*1000) > currentdate){
-                data={
-					appId : doc.data().appId,
-					auctionId: doc.data().auctionId,
-					bidders : doc.data().bidders,
-					description : doc.data().description,
-					highestBid : doc.data().highestBid,
-					image : doc.data().image,
-					itemName : doc.data().itemName,
-					startBid : doc.data().startBid,
-					status : doc.data().status,
-					time : new Date(doc.data().time.seconds*1000).getDate() - currentdate.getDate(),
-					userId : doc.data().userId,
-				     }
-
-                auctionData = data;
-             }
-             else{
-                db.collection('auctions').doc(doc.id).update({"status":"closed"})
-				flag=0
-             }
-			
-		});
-
-		if(flag ==0){
-			return res.status(400).json({ auction: [], errorMessage: "Auction is closed" });
-		}
-
-        if(auctionData.userId == userId){
-			return res.status(400).json({ auction: [], errorMessage: "Seller can not increase the bid" });
-        }
-        if(auctionData.highestBid[1] == userId){
-			return res.status(400).json({ auction: [], errorMessage: "Highest bidder can not increase the bid" });
-        }
-
-        
-        auction = auctionRef.doc(auctionId)
-
-        newBid = Math.floor(Number(auctionData.highestBid[0]) + Number(auctionData.highestBid[0]) * 0.05)
-        
-        // add bidder to bidders
-        allBidders = auctionData.bidders
-
-        flag = 0
-        for(i in allBidders){
-            if(allBidders[i] == userId){
-                flag = 1
-            }
-        }
-         
-        if(flag ==0){
-            allBidders.push(userId)
-        }
-        
-        // set highest bid
-        auction.update(
-            {"highestBid": [newBid, userId],
-              "bidders" : allBidders
-           })
- 
-		auctionData.highestBid = [newBid, userId, 'app']
 	    auctionData.bidders = allBidders
 
 		return res.status(200).json(auctionData);
